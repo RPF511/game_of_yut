@@ -381,6 +381,7 @@ def get_move(player):
     while(len(cur_yoot)>0):
         if(get_stat):
             roll_yoot()
+            get_stat = 0
         show_state(player,cur_yoot,onboard)
         print(cur_yoot)
         print("input [onboard_index] (new : -1)")
@@ -392,12 +393,11 @@ def get_move(player):
         if(onidx == -1):
             onboard[player].append(0)
             outboard[player] -= 1
-            onidx = -1
             if(board[player][0] != "□"):
                 mix_stat = int(board[player][0])
             board[player][0] = "1"
         
-        move_next(player,yoot,onboard[player][onidx],onboard[player][onidx])
+        get_stat = move_next(player,yoot,onboard[player][onidx],onboard[player][onidx])
 
         if mix_stat != 0:
             board[player][0] = str(mix_stat)
