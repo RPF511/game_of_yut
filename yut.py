@@ -355,43 +355,7 @@ def roll_yoot():
     a = check_yoot(a)
     cur_yoot.append(a)
     return a
-"""
-def check_yoot(num):
-    if num == 0:
-        return 5
-    elif num == 1:
-        return 1
-    elif num == 2:
-        return 1
-    elif num == 3:
-        return 2
-    elif num == 4:
-        return 1
-    elif num == 5:
-        return 2
-    elif num == 6:
-        return 2
-    elif num == 7:
-        return 3
-    elif num == 8:
-        return -1
-    elif num == 9:
-        return 2
-    elif num == 10:
-        return 2
-    elif num == 11:
-        return 3
-    elif num == 12:
-        return 2
-    elif num == 13:
-        return 3
-    elif num == 14:
-        return 3
-    elif num == 15:
-        return 4
-    else:
-        return 0
-"""
+
 def check_yoot(num):   
     a = [5,1,1,2,1,2,2,3,-1,2,2,3,2,3,3,4,0]
     return a[num]
