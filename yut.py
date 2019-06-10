@@ -199,6 +199,33 @@ yoot = ["\
     -----   -----   -----   -----\n\
     윷입니다!\n"]
 
+"""
+def check(a,b,board):
+    if board[a][b] == 0:
+        return "□"
+    else:
+        return str(board[a][b])
+def show_board():
+    global board
+
+    print("\n 10 "+check(0,10,board)+board[1][10]+"    9 "+ board[0][9]+board[1][9]+"    8 "+board[0][8]+board[1][8]+"    7 "+board[0][7]+board[1][7]+"    6 "+board[0][6]+board[1][6]+"    5 "+board[0][5]+board[1][5])
+    print(" 10 "+board[2][10]+board[3][10]+"    9 "+ board[2][9]+board[3][9]+"    8 "+board[2][8]+board[3][8]+"    7 "+board[2][7]+board[3][7]+"    6 "+board[2][6]+board[3][6]+"    5 "+board[2][5]+board[3][5]+"\n\n")
+    print(" 11 "+board[0][11]+board[1][11]+"   25 "+ board[0][25]+board[1][25]+"      "+"        "+"     21 "+board[0][20]+board[1][20]+"    4 "+board[0][4]+board[1][4])
+    print(" 11 "+board[2][11]+board[3][11]+"   25 "+ board[2][25]+board[3][25]+"      "+"        "+"     21 "+board[2][20]+board[3][20]+"    4 "+board[2][4]+board[3][4]+"\n\n")
+    print(" 12 "+board[0][12]+board[1][12]+"      "+"   26 "+board[0][26]+board[1][26]+"       21 "+board[0][21]+board[1][21]+"          3 "+board[0][3]+board[1][3])
+    print(" 12 "+board[2][12]+board[3][12]+"      "+"   26 "+board[2][26]+board[3][26]+"       21 "+board[2][21]+board[3][21]+"          3 "+board[2][3]+board[3][3])
+    print("                     22 "+board[0][22]+board[1][22]+"                     ")
+    print("                     22 "+board[2][22]+board[3][22]+"                     ")
+    print(" 13 "+board[0][13]+board[1][13]+"      "+"   23 "+board[0][23]+board[1][23]+"       27 "+board[0][27]+board[1][27]+"          2 "+board[0][2]+board[1][2])
+    print(" 13 "+board[2][13]+board[3][13]+"      "+"   23 "+board[2][23]+board[3][23]+"       27 "+board[2][27]+board[3][27]+"          2 "+board[2][2]+board[3][2]+"\n\n")
+    print(" 14 "+board[0][14]+board[1][14]+"   24 "+ board[0][24]+board[1][24]+"      "+"        "+"     28 "+board[0][28]+board[1][28]+"    1 "+board[0][1]+board[1][1])
+    print(" 14 "+board[2][14]+board[3][14]+"   24 "+ board[2][24]+board[3][24]+"      "+"        "+"     28 "+board[2][28]+board[3][28]+"    1 "+board[2][1]+board[3][1]+"\n\n")
+    print(" 15 "+board[0][15]+board[1][15]+"   16 "+ board[0][16]+board[1][16]+"   17 "+board[0][17]+board[1][17]+"   18 "+board[0][18]+board[1][18]+"   19 "+board[0][19]+board[1][19]+"    0 "+board[0][0]+board[1][0])
+    print(" 15 "+board[2][15]+board[3][15]+"   16 "+ board[2][16]+board[3][16]+"   17 "+board[2][17]+board[3][17]+"   18 "+board[2][18]+board[3][18]+"   19 "+board[2][19]+board[3][19]+"    0 "+board[2][0]+board[3][0]+"↑start\n\n")
+
+
+"""
+
 
 """
 def show_board():
@@ -241,7 +268,10 @@ def move_next(player,mov,start,cur_loc):
     global board
     if mov == 0:
         global onboard
-        board[player][cur_loc] = board[player][start]
+        if board[player][cur_loc] == "□":
+            board[player][cur_loc] = board[player][start]
+        else:
+            board[player][cur_loc] = str(int(board[player][cur_loc])+int(board[player][start]))
         board[player][start] = "□"
         for i in range(len(onboard[player])):
             if onboard[player][i] == start:
@@ -251,8 +281,8 @@ def move_next(player,mov,start,cur_loc):
                 for j in range(len(onboard[i])):
                     if j == cur_loc:
                         global outboard
-                        onboard[i].pop[j]
                         outboard[i] += int(board[i][cur_loc])
+                        onboard[i].pop[j]
                 board[i][cur_loc] = "□"
                 return 1
         return 0
@@ -325,7 +355,7 @@ def roll_yoot():
     a = check_yoot(a)
     cur_yoot.append(a)
     return a
-
+"""
 def check_yoot(num):
     if num == 0:
         return 5
@@ -361,18 +391,28 @@ def check_yoot(num):
         return 4
     else:
         return 0
+"""
+def check_yoot(num):   
+    a = [5,1,1,2,1,2,2,3,-1,2,2,3,2,3,3,4,0]
+    return a[num]
 
 def show_state(player,cur_yoot,onboard):
 
     yootlen = len(cur_yoot)
     boardlen = len(onboard[player])
-    print("you have ",end='') 
+    print("you have ",end=' ') 
+    print(str(onboard[player]),end=' ')
+    """
     for i in range(boardlen):
         print(str(i)+" : "+str(onboard[player][i]),end=' ')
+    """
     print("onboard")
-    print("and you have ",end='') 
+    print("and you have ",end='')
+    print(str(cur_yoot),end=' ') 
+    """
     for i in range(yootlen):
         print(str(i)+" : "+str(cur_yoot[i]),end=' ')
+    """
     print("chance to move")
 
 def get_move(player):
@@ -383,7 +423,6 @@ def get_move(player):
             roll_yoot()
             get_stat = 0
         show_state(player,cur_yoot,onboard)
-        print(cur_yoot)
         print("input [onboard_index] (new : -1)")
         onidx = int(input())
         print("input [yoot_index]")
