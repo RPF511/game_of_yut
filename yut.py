@@ -1,9 +1,9 @@
 import random
 
-board = [["□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□"],["□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□"],["□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□"],["□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□","□"]]
+board = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
 outboard = [4,4,4,4]
 done = [0,0,0,0]
-onboard = [[],[],[],[]]
+#onboard = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
 cur_yoot = []
 yoot = ["\
     -----   -----   -----   -----\n\
@@ -198,94 +198,59 @@ yoot = ["\
    l     l l     l l     l l     l\n\
     -----   -----   -----   -----\n\
     윷입니다!\n"]
+get_stat = 0
 
-"""
-def check(a,b,board):
+def check(a,b):
+    global board
     if board[a][b] == 0:
         return "□"
     else:
         return str(board[a][b])
+
 def show_board():
-    global board
+    global board,outboard,done
 
-    print("\n 10 "+check(0,10,board)+board[1][10]+"    9 "+ board[0][9]+board[1][9]+"    8 "+board[0][8]+board[1][8]+"    7 "+board[0][7]+board[1][7]+"    6 "+board[0][6]+board[1][6]+"    5 "+board[0][5]+board[1][5])
-    print(" 10 "+board[2][10]+board[3][10]+"    9 "+ board[2][9]+board[3][9]+"    8 "+board[2][8]+board[3][8]+"    7 "+board[2][7]+board[3][7]+"    6 "+board[2][6]+board[3][6]+"    5 "+board[2][5]+board[3][5]+"\n\n")
-    print(" 11 "+board[0][11]+board[1][11]+"   25 "+ board[0][25]+board[1][25]+"      "+"        "+"     21 "+board[0][20]+board[1][20]+"    4 "+board[0][4]+board[1][4])
-    print(" 11 "+board[2][11]+board[3][11]+"   25 "+ board[2][25]+board[3][25]+"      "+"        "+"     21 "+board[2][20]+board[3][20]+"    4 "+board[2][4]+board[3][4]+"\n\n")
-    print(" 12 "+board[0][12]+board[1][12]+"      "+"   26 "+board[0][26]+board[1][26]+"       21 "+board[0][21]+board[1][21]+"          3 "+board[0][3]+board[1][3])
-    print(" 12 "+board[2][12]+board[3][12]+"      "+"   26 "+board[2][26]+board[3][26]+"       21 "+board[2][21]+board[3][21]+"          3 "+board[2][3]+board[3][3])
-    print("                     22 "+board[0][22]+board[1][22]+"                     ")
-    print("                     22 "+board[2][22]+board[3][22]+"                     ")
-    print(" 13 "+board[0][13]+board[1][13]+"      "+"   23 "+board[0][23]+board[1][23]+"       27 "+board[0][27]+board[1][27]+"          2 "+board[0][2]+board[1][2])
-    print(" 13 "+board[2][13]+board[3][13]+"      "+"   23 "+board[2][23]+board[3][23]+"       27 "+board[2][27]+board[3][27]+"          2 "+board[2][2]+board[3][2]+"\n\n")
-    print(" 14 "+board[0][14]+board[1][14]+"   24 "+ board[0][24]+board[1][24]+"      "+"        "+"     28 "+board[0][28]+board[1][28]+"    1 "+board[0][1]+board[1][1])
-    print(" 14 "+board[2][14]+board[3][14]+"   24 "+ board[2][24]+board[3][24]+"      "+"        "+"     28 "+board[2][28]+board[3][28]+"    1 "+board[2][1]+board[3][1]+"\n\n")
-    print(" 15 "+board[0][15]+board[1][15]+"   16 "+ board[0][16]+board[1][16]+"   17 "+board[0][17]+board[1][17]+"   18 "+board[0][18]+board[1][18]+"   19 "+board[0][19]+board[1][19]+"    0 "+board[0][0]+board[1][0])
-    print(" 15 "+board[2][15]+board[3][15]+"   16 "+ board[2][16]+board[3][16]+"   17 "+board[2][17]+board[3][17]+"   18 "+board[2][18]+board[3][18]+"   19 "+board[2][19]+board[3][19]+"    0 "+board[2][0]+board[3][0]+"↑start\n\n")
-
-
-"""
-
-
-"""
-def show_board():
-    global board
-
-    print("\n    "+board[0][10]+board[1][10]+"      "+ board[0][9]+board[1][9]+"      "+board[0][8]+board[1][8]+"      "+board[0][7]+board[1][7]+"      "+board[0][6]+board[1][6]+"      "+board[0][5]+board[1][5])
-    print("    "+board[2][10]+board[3][10]+"      "+ board[2][9]+board[3][9]+"      "+board[2][8]+board[3][8]+"      "+board[2][7]+board[3][7]+"      "+board[2][6]+board[3][6]+"      "+board[2][5]+board[3][5]+"\n\n")
-    print("    "+board[0][11]+board[1][11]+"      "+ board[0][20]+board[1][20]+"      "+"      "+"        "+"      "+board[0][21]+board[1][21]+"      "+board[0][4]+board[1][4])
-    print("    "+board[2][11]+board[3][11]+"      "+ board[2][20]+board[3][20]+"      "+"      "+"        "+"      "+board[2][21]+board[3][21]+"      "+board[2][4]+board[3][4]+"\n\n")
-    print("    "+board[0][12]+board[1][12]+"      "+"     "+"     "+board[0][22]+board[1][22]+"      "+board[0][23]+board[1][23]+"                "+board[0][3]+board[1][3])
-    print("    "+board[2][12]+board[3][12]+"      "+"     "+"     "+board[2][22]+board[3][22]+"      "+board[2][23]+board[3][23]+"                "+board[2][3]+board[3][3])
-    print("                             "+board[0][24]+board[1][24]+"                     ")
-    print("                             "+board[2][24]+board[3][24]+"                     ")
-    print("    "+board[0][13]+board[1][13]+"      "+"     "+"     "+board[0][25]+board[1][25]+"      "+board[0][26]+board[1][26]+"                "+board[0][2]+board[1][2])
-    print("    "+board[2][13]+board[3][13]+"      "+"     "+"     "+board[2][25]+board[3][25]+"      "+board[2][26]+board[3][26]+"                "+board[2][2]+board[3][2]+"\n\n")
-    print("    "+board[0][14]+board[1][14]+"      "+ board[0][27]+board[1][27]+"      "+"      "+"        "+"      "+board[0][28]+board[1][28]+"      "+board[0][1]+board[1][1])
-    print("    "+board[2][14]+board[3][14]+"      "+ board[2][27]+board[3][27]+"      "+"      "+"        "+"      "+board[2][28]+board[3][28]+"      "+board[2][1]+board[3][1]+"\n\n")
-    print("    "+board[0][15]+board[1][15]+"      "+ board[0][16]+board[1][16]+"      "+board[0][17]+board[1][17]+"      "+board[0][18]+board[1][18]+"      "+board[0][19]+board[1][19]+"      "+board[0][0]+board[1][0])
-    print("    "+board[2][15]+board[3][15]+"      "+ board[2][16]+board[3][16]+"      "+board[2][17]+board[3][17]+"      "+board[2][18]+board[3][18]+"      "+board[2][19]+board[3][19]+"      "+board[2][0]+board[3][0]+"↑start\n\n")
- """
-def show_board():
-    global board
-
-    print("\n 10 "+board[0][10]+board[1][10]+"    9 "+ board[0][9]+board[1][9]+"    8 "+board[0][8]+board[1][8]+"    7 "+board[0][7]+board[1][7]+"    6 "+board[0][6]+board[1][6]+"    5 "+board[0][5]+board[1][5])
-    print(" 10 "+board[2][10]+board[3][10]+"    9 "+ board[2][9]+board[3][9]+"    8 "+board[2][8]+board[3][8]+"    7 "+board[2][7]+board[3][7]+"    6 "+board[2][6]+board[3][6]+"    5 "+board[2][5]+board[3][5]+"\n\n")
-    print(" 11 "+board[0][11]+board[1][11]+"   25 "+ board[0][25]+board[1][25]+"      "+"        "+"     21 "+board[0][20]+board[1][20]+"    4 "+board[0][4]+board[1][4])
-    print(" 11 "+board[2][11]+board[3][11]+"   25 "+ board[2][25]+board[3][25]+"      "+"        "+"     21 "+board[2][20]+board[3][20]+"    4 "+board[2][4]+board[3][4]+"\n\n")
-    print(" 12 "+board[0][12]+board[1][12]+"      "+"   26 "+board[0][26]+board[1][26]+"       21 "+board[0][21]+board[1][21]+"          3 "+board[0][3]+board[1][3])
-    print(" 12 "+board[2][12]+board[3][12]+"      "+"   26 "+board[2][26]+board[3][26]+"       21 "+board[2][21]+board[3][21]+"          3 "+board[2][3]+board[3][3])
-    print("                     22 "+board[0][22]+board[1][22]+"                     ")
-    print("                     22 "+board[2][22]+board[3][22]+"                     ")
-    print(" 13 "+board[0][13]+board[1][13]+"      "+"   23 "+board[0][23]+board[1][23]+"       27 "+board[0][27]+board[1][27]+"          2 "+board[0][2]+board[1][2])
-    print(" 13 "+board[2][13]+board[3][13]+"      "+"   23 "+board[2][23]+board[3][23]+"       27 "+board[2][27]+board[3][27]+"          2 "+board[2][2]+board[3][2]+"\n\n")
-    print(" 14 "+board[0][14]+board[1][14]+"   24 "+ board[0][24]+board[1][24]+"      "+"        "+"     28 "+board[0][28]+board[1][28]+"    1 "+board[0][1]+board[1][1])
-    print(" 14 "+board[2][14]+board[3][14]+"   24 "+ board[2][24]+board[3][24]+"      "+"        "+"     28 "+board[2][28]+board[3][28]+"    1 "+board[2][1]+board[3][1]+"\n\n")
-    print(" 15 "+board[0][15]+board[1][15]+"   16 "+ board[0][16]+board[1][16]+"   17 "+board[0][17]+board[1][17]+"   18 "+board[0][18]+board[1][18]+"   19 "+board[0][19]+board[1][19]+"    0 "+board[0][0]+board[1][0])
-    print(" 15 "+board[2][15]+board[3][15]+"   16 "+ board[2][16]+board[3][16]+"   17 "+board[2][17]+board[3][17]+"   18 "+board[2][18]+board[3][18]+"   19 "+board[2][19]+board[3][19]+"    0 "+board[2][0]+board[3][0]+"↑start\n\n")
+    print("\n 10 "+check(0,10)+check(1,10)+"    9 "+ check(0,9)+check(1,9)+"    8 "+check(0,8)+check(1,8)+"    7 "+check(0,7)+check(1,7)+"    6 "+check(0,6)+check(1,6)+"    5 "+check(0,5)+check(1,5))
+    print("    "+check(2,10)+check(3,10)+"      "+ check(2,9)+check(3,9)+"      "+check(2,8)+check(3,8)+"      "+check(2,7)+check(3,7)+"      "+check(2,6)+check(3,6)+"      "+check(2,5)+check(3,5)+"\n\n")
+    print(" 11 "+check(0,11)+check(1,11)+"   25 "+ check(0,25)+check(1,25)+"                   20 "+check(0,20)+check(1,20)+"    4 "+check(0,4)+check(1,4))
+    print("    "+check(2,11)+check(3,11)+"      "+ check(2,25)+check(3,25)+"                      "+check(2,20)+check(3,20)+"      "+check(2,4)+check(3,4)+"\n\n")
+    print(" 12 "+check(0,12)+check(1,12)+"         26 "+check(0,26)+check(1,26)+"       21 "+check(0,21)+check(1,21)+"          3 "+check(0,3)+check(1,3))
+    print("    "+check(2,12)+check(3,12)+"            "+check(2,26)+check(3,26)+"          "+check(2,21)+check(3,21)+"            "+check(2,3)+check(3,3))
+    print("                     22 "+check(0,22)+check(1,22)+"                     ")
+    print("                        "+check(2,22)+check(3,22)+"                     ")
+    print(" 13 "+check(0,13)+check(1,13)+"         23 "+check(0,23)+check(1,23)+"       27 "+check(0,27)+check(1,27)+"          2 "+check(0,2)+check(1,2))
+    print("    "+check(2,13)+check(3,13)+"            "+check(2,23)+check(3,23)+"          "+check(2,27)+check(3,27)+"            "+check(2,2)+check(3,2)+"\n\n")
+    print(" 14 "+check(0,14)+check(1,14)+"   24 "+ check(0,24)+check(1,24)+"                   28 "+check(0,28)+check(1,28)+"    1 "+check(0,1)+check(1,1))
+    print("    "+check(2,14)+check(3,14)+"      "+ check(2,24)+check(3,24)+"                      "+check(2,28)+check(3,28)+"      "+check(2,1)+check(3,1)+"\n\n")
+    print(" 15 "+check(0,15)+check(1,15)+"   16 "+ check(0,16)+check(1,16)+"   17 "+check(0,17)+check(1,17)+"   18 "+check(0,18)+check(1,18)+"   19 "+check(0,19)+check(1,19)+"    0 "+check(0,0)+check(1,0))
+    print("    "+check(2,15)+check(3,15)+"      "+ check(2,16)+check(3,16)+"      "+check(2,17)+check(3,17)+"      "+check(2,18)+check(3,18)+"      "+check(2,19)+check(3,19)+"      "+check(2,0)+check(3,0)+"↑start\n\n")
+    print("outboard : "+str(outboard)+"      done : "+str(done))
 
 def move_next(player,mov,start,cur_loc):
     global board
+    #print(str(player)+" "+str(mov)+" "+str(start)+" "+str(cur_loc))
     if mov == 0:
         global onboard
-        if board[player][cur_loc] == "□":
+        """말을 업지 않을 경우 아래 코드처럼 분기를 나누고 그걸 판별하는 코드를 추가로 작성해야함
+        if board[player][cur_loc] == 0:
             board[player][cur_loc] = board[player][start]
         else:
-            board[player][cur_loc] = str(int(board[player][cur_loc])+int(board[player][start]))
-        board[player][start] = "□"
-        for i in range(len(onboard[player])):
-            if onboard[player][i] == start:
-                onboard[player][i] = cur_loc
+            board[player][cur_loc] += board[player][start]
+        """
+        board[player][cur_loc] += board[player][start] #말을 업음
+        board[player][start] = 0
+        #onboard[player][start] = 0
+        #onboard[player][cur_loc] = 1
         for i in range(4):
-            if i != player and board[i][cur_loc] != "□":
-                for j in range(len(onboard[i])):
-                    if j == cur_loc:
-                        global outboard
-                        outboard[i] += int(board[i][cur_loc])
-                        onboard[i].pop[j]
-                board[i][cur_loc] = "□"
-                return 1
-        return 0
+            if i != player and board[i][cur_loc] != 0:
+                global outboard
+                outboard[i] += board[i][cur_loc]
+                board[i][cur_loc] = 0
+                #onboard[i][cur_loc] = 0
+                global get_stat
+                get_stat = 1
+        #print("get stat : ",str(get_stat))
+        #return get_stat
     elif mov == -1:
         if cur_loc == 0:
             print("19 or 28?")
@@ -319,12 +284,8 @@ def move_next(player,mov,start,cur_loc):
     else:
         if cur_loc == 19 or cur_loc == 28:
             global done
-            done[player] += int(board[player][start])
-            board[player][start] = "□"
-            for i in range(len(onboard[player])):
-                if onboard[player][i] == start:
-                    onboard[player].pop(i)
-            return 0
+            done[player] += board[player][start]
+            board[player][start] = 0
         elif cur_loc == 26:
             if mov == 1:
                 move_next(player,mov-1,start,22)
@@ -360,33 +321,21 @@ def check_yoot(num):
     a = [5,1,1,2,1,2,2,3,-1,2,2,3,2,3,3,4,0]
     return a[num]
 
-def show_state(player,cur_yoot,onboard):
-
+def show_state(player,cur_yoot):
     yootlen = len(cur_yoot)
-    boardlen = len(onboard[player])
-    print("you have ",end=' ') 
-    print(str(onboard[player]),end=' ')
-    """
-    for i in range(boardlen):
-        print(str(i)+" : "+str(onboard[player][i]),end=' ')
-    """
+    print("you have ",end=' ')
+    for i in range(len(board[player])):
+        if board[player][i] != 0:
+            print("["+str(i)+" : "+str(board[player][i])+"]",end=' ')
     print("onboard")
     print("and you have ",end='')
     print(str(cur_yoot),end=' ') 
-    """
-    for i in range(yootlen):
-        print(str(i)+" : "+str(cur_yoot[i]),end=' ')
-    """
     print("chance to move")
 
 def get_move(player):
-    global cur_yoot,onboard,outboard,board
-    get_stat = 0
+    global cur_yoot,outboard,board,get_stat
     while(len(cur_yoot)>0):
-        if(get_stat):
-            roll_yoot()
-            get_stat = 0
-        show_state(player,cur_yoot,onboard)
+        show_state(player,cur_yoot)
         print("input [onboard_index] (new : -1)")
         onidx = int(input())
         print("input [yoot_index]")
@@ -394,29 +343,21 @@ def get_move(player):
         yoot = cur_yoot.pop(yoot)
         mix_stat = 0
         if(onidx == -1):
-            onboard[player].append(0)
             outboard[player] -= 1
-            if(board[player][0] != "□"):
-                mix_stat = int(board[player][0])
-            board[player][0] = "1"
-        
-        get_stat = move_next(player,yoot,onboard[player][onidx],onboard[player][onidx])
-
+            if(board[player][0] != 0):
+                mix_stat = board[player][0]
+            board[player][0] = 1
+            onidx = 0
+        #print(yoot)
+        move_next(player,yoot,onidx,onidx)
         if mix_stat != 0:
-            board[player][0] = str(mix_stat)
+            board[player][0] = mix_stat
         show_board()
+        if(get_stat == 1):
+            print("got pieces! roll more")
+            roll_yoot()
+            get_stat = 0
     
-
-
-"""
-show_board()
-board[0][0]="1"
-show_board()
-move_next(0,5,0,0)
-show_board()
-move_next(0,3,5,5)
-show_board()
-"""
 def roll(roll_more): 
     while roll_more > 0:
         a = roll_yoot()
@@ -429,11 +370,7 @@ def turn(player):
     roll(1)
     get_move(player)
 
-    
-
 show_board()
-
-
 playeridx = 0
 while True:
     turn(playeridx)
